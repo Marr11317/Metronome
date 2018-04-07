@@ -8,7 +8,8 @@ Metronome::Metronome(QObject *parent)
       m_timeSigDenom (4),
       m_beatNumber (0),
       m_tempo (120),
-      //m_volumeAsSlider (0.5),
+      m_volumeAsSlider (0.5),
+      m_playStopButtonIsPressed (false),
       m_fileClaves (new QFile("Sounds/Claves.wav")),
       m_fileWoodBlocksHigh (new QFile("Sounds/Wood_Blocks_High.wav")),
       m_fileWoodBlocksLow (new QFile("Sounds/Wood_Blocks_Low.wav")),
@@ -146,4 +147,15 @@ void Metronome::setVolume(qreal volume)
     m_actualVolume = QAudio::convertVolume(volume,
                                            QAudio::LogarithmicVolumeScale,
                                            QAudio::LinearVolumeScale);
+}
+
+void Metronome::playStopButtonPressed()
+{
+    if (m_playStopButtonIsPressed){
+        stop();
+    }
+    else {
+        play();
+    }
+    m_playStopButtonIsPressed = m_playStopButtonIsPressed * -1 + 1;
 }

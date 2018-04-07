@@ -30,7 +30,7 @@ Page {
 
             color: "lightgrey"
         }
-        
+
         Slider {
             id: volumeSlider
             anchors.verticalCenter: pageTitleLabel.verticalCenter
@@ -41,12 +41,13 @@ Page {
             to: 100
             stepSize: 1
             value: 50
-            
-            onValueChanged: {
-                metronome.setVolume(volumeSlider.value);
+
+            Connections {
+                target: metronome
+                onValueChanged: setVolume(volumeSlider.value)
             }
         }
-        
+
         Text {
             id: volumeText
 
@@ -59,6 +60,10 @@ Page {
             font.pixelSize: 2 / 3 * height
         }
     }
+    
+    Metronome {
+        id: metronome
+    }
 
     Slider {
         id: tempoSlider
@@ -70,9 +75,10 @@ Page {
         from: 20
         to: 300
         value: 120
-        
-        onValueChanged: {
-            metronome.setTempo(tempoSlider.value);
+
+        Connections {
+            target: metronome
+            onValueChanged: setTempo(tempoSlider.value)
         }
     }
 
@@ -98,21 +104,15 @@ Page {
             border.color: (parent.hovered) ? "red" : "black"
             color: parent.checked ? "grey" : "lightgrey"
         }
-        
-        Metronome {
-            id: metronome
-        }
-        
-        onCheckedChanged: {
-            if(checked){
-                metronome.play();
-            }
-            else{
-                metronome.stop();
-            }
+
+        Connections {
+            target: metronome
+            onClicked: playStopButtonPressed()
         }
     }
-
+    
+    
+    
     Text {
         id: tempoTextInt
 
@@ -123,4 +123,6 @@ Page {
         anchors.bottomMargin: 20
         anchors.horizontalCenter: tempoSlider.horizontalCenter
     }
+
+    
 }

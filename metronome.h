@@ -21,9 +21,6 @@ public:
     Metronome(QObject *parent = nullptr);
     ~Metronome();
     
-    Q_INVOKABLE void stop();
-    Q_INVOKABLE void play();
-    
     quint16 tempo();
     quint8 timeSigNum();
     quint8 timeSigDenom();
@@ -34,6 +31,8 @@ public:
     Q_INVOKABLE void setTimeSigNum(quint8);
     Q_INVOKABLE void setTimeSigDenom(quint8);
     Q_INVOKABLE void setVolume(qreal);
+    
+    Q_INVOKABLE void playStopButtonPressed();
     
 signals:
     void timeSigNumChanged(quint8);
@@ -55,6 +54,8 @@ private:
     qreal m_volumeAsSlider;
     qreal m_actualVolume;
     
+    qint8 m_playStopButtonIsPressed;
+    
     QFile *m_fileClaves;
     QFile *m_fileWoodBlocksHigh;
     QFile *m_fileWoodBlocksLow;
@@ -62,6 +63,9 @@ private:
     QAudioOutput *m_metronome;
     
     QTimer *m_timer;
+    
+    void stop();
+    void play();
 };
 
 #endif // METRONOME_H
